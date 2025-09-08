@@ -40,4 +40,4 @@ Next, simply run:
 ```bash
 python3 /sim_core/main.py
 ```
-Now, in 10 seconds be able to see the dashboard working. If not, check the refresh button on the top right corner in grafana.
+Now, in 10 seconds you will be able to see the dashboard working. If not, check the refresh button on the top right corner in grafana. 
