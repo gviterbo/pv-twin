@@ -1,0 +1,20 @@
+groups:
+  - name: general_purpose
+    rules:
+      - alert: VictoriaMetricsDown
+        expr: absent(vm_app_version)
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "VictoriaMetrics aparentemente fora do ar"
+          description: "Não há série vm_app_version há pelo menos 1 min."
+
+      - alert: VictoriaMetricsHighCPU
+        expr: avg_over_time(process_cpu_seconds_total[1m]) > 0.8
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU alta no VictoriaMetrics"
+          description: "CPU média > 0.8 por 2m."

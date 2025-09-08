@@ -1,0 +1,56 @@
+services:
+  victoria-metrics:
+    image: victoriametrics/victoria-metrics:v1.103.0
+    command:
+      - "--selfScrapeInterval=0"
+      - "--storageDataPath=/victoria-metrics-data"
+    ports:
+      - "8428:8428"
+    volumes:
+      - vm-data:/victoria-metrics-data
+    restart: unless-stopped
+
+  vmalert:
+    image: victoriametrics/vmalert:v1.103.0
+    depends_on:
+      - victoria-metrics
+      - alertmanager
+    command:
+      - "-datasource.url=http://victoria-metrics:8428"
+      - "-notifier.url=http://alertmanager:9093"
+      - "-rule=/etc/alerts/*.yml"
+      - "-external.url=http://localhost:8880"
+      - "-remoteWrite.url=http://victoria-metrics:8428/api/v1/write"
+    ports:
+      - "8880:8880"
+    volumes:
+      - ./alerts:/etc/alerts:ro
+    restart: unless-stopped
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.4.3
+    depends_on:
+      - victoria-metrics
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_FEATURE_TOGGLES_ENABLE=ngalertUnifiedAlerting
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+
+volumes:
+  vm-data:
+  grafana-data:

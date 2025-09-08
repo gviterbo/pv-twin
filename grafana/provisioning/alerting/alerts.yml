@@ -1,0 +1,456 @@
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: solar-alarms
+    folder: Solar Alerts
+    interval: 10s
+    rules:
+      - uid: solar_pr_low_crit_v1
+        title: PR baixo (CRIT) – último valor em 30m
+        condition: E
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: A
+              expr: "max_over_time(alert_state{name=\"alarm_pr_low\",plant=\"UFV_X\"}[30m])"
+          - refId: B
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: B
+              expr: "2"
+          - refId: D
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: D
+              expr: "scalar(count_over_time(alert_state{name=\"alarm_pr_low\",plant=\"UFV_X\"}[30m]) > 0)"
+          - refId: E
+            queryType: instant
+            datasourceUid: "__expr__"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: E
+              type: math
+              expression: "(A == B) and (D == 1)"
+        for: 0s
+        annotations:
+          summary: "PR baixo (CRIT) – último valor reportado"
+        labels:
+          severity: critical
+          alarm: alarm_pr_low
+
+      - uid: solar_pr_low_warn_v1
+        title: PR baixo (WARN) – último valor em 30m
+        condition: E
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: A
+              expr: "max_over_time(alert_state{name=\"alarm_pr_low\",plant=\"UFV_X\"}[30m])"
+          - refId: B
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: B
+              expr: "1"
+          - refId: D
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: D
+              expr: "scalar(count_over_time(alert_state{name=\"alarm_pr_low\",plant=\"UFV_X\"}[30m]) > 0)"
+          - refId: E
+            queryType: instant
+            datasourceUid: "__expr__"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: E
+              type: math
+              expression: "(A == B) and (D == 1)"
+        for: 0s
+        annotations:
+          summary: "PR baixo (WARN) – último valor reportado"
+        labels:
+          severity: warning
+          alarm: alarm_pr_low
+
+      - uid: solar_inv_offline_crit_v1
+        title: Inversores offline (CRIT) – último valor em 30m
+        condition: E
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: A
+              expr: "max_over_time(alert_state{name=\"alarm_inverter_offline\",plant=\"UFV_X\"}[30m])"
+          - refId: B
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: B
+              expr: "2"
+          - refId: D
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: D
+              expr: "scalar(count_over_time(alert_state{name=\"alarm_inverter_offline\",plant=\"UFV_X\"}[30m]) > 0)"
+          - refId: E
+            queryType: instant
+            datasourceUid: "__expr__"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: E
+              type: math
+              expression: "(A == B) and (D == 1)"
+        for: 0s
+        annotations:
+          summary: "≥ 2 inversores zerados – último valor reportado"
+        labels:
+          severity: critical
+          alarm: alarm_inverter_offline
+
+      - uid: solar_inv_offline_warn_v1
+        title: Inversor offline (WARN) – último valor em 30m
+        condition: E
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: A
+              expr: "max_over_time(alert_state{name=\"alarm_inverter_offline\",plant=\"UFV_X\"}[30m])"
+          - refId: B
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: B
+              expr: "1"
+          - refId: D
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: D
+              expr: "scalar(count_over_time(alert_state{name=\"alarm_inverter_offline\",plant=\"UFV_X\"}[30m]) > 0)"
+          - refId: E
+            queryType: instant
+            datasourceUid: "__expr__"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: E
+              type: math
+              expression: "(A == B) and (D == 1)"
+        for: 0s
+        annotations:
+          summary: "1 inversor zerado – último valor reportado"
+        labels:
+          severity: warning
+          alarm: alarm_inverter_offline
+
+      - uid: solar_sunny_noprod_crit_v1
+        title: Sol forte sem produção (CRIT) – último valor em 30m
+        condition: E
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: A
+              expr: "max_over_time(alert_state{name=\"alarm_sunny_no_production\",plant=\"UFV_X\"}[30m])"
+          - refId: B
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: B
+              expr: "2"
+          - refId: D
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: D
+              expr: "scalar(count_over_time(alert_state{name=\"alarm_sunny_no_production\",plant=\"UFV_X\"}[30m]) > 0)"
+          - refId: E
+            queryType: instant
+            datasourceUid: "__expr__"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: E
+              type: math
+              expression: "(A == B) and (D == 1)"
+        for: 0s
+        annotations:
+          summary: "POA alta e Pac≈0 – último valor reportado"
+        labels:
+          severity: critical
+          alarm: alarm_sunny_no_production
+
+      - uid: solar_temp_delta_crit_v1
+        title: Delta de temperatura elevado (CRIT) – último valor em 30m
+        condition: E
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: A
+              expr: "max_over_time(alert_state{name=\"alarm_temp_delta\",plant=\"UFV_X\"}[30m])"
+          - refId: B
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: B
+              expr: "2"
+          - refId: D
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: D
+              expr: "scalar(count_over_time(alert_state{name=\"alarm_temp_delta\",plant=\"UFV_X\"}[30m]) > 0)"
+          - refId: E
+            queryType: instant
+            datasourceUid: "__expr__"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: E
+              type: math
+              expression: "(A == B) and (D == 1)"
+        for: 0s
+        annotations:
+          summary: "|Tcell - Tmod| elevado – último valor reportado"
+        labels:
+          severity: critical
+          alarm: alarm_temp_delta
+
+      - uid: solar_temp_delta_warn_v1
+        title: Delta de temperatura elevado (WARN) – último valor em 30m
+        condition: E
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: A
+              expr: "max_over_time(alert_state{name=\"alarm_temp_delta\",plant=\"UFV_X\"}[30m])"
+          - refId: B
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: B
+              expr: "1"
+          - refId: D
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: D
+              expr: "scalar(count_over_time(alert_state{name=\"alarm_temp_delta\",plant=\"UFV_X\"}[30m]) > 0)"
+          - refId: E
+            queryType: instant
+            datasourceUid: "__expr__"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: E
+              type: math
+              expression: "(A == B) and (D == 1)"
+        for: 0s
+        annotations:
+          summary: "|Tcell - Tmod| acima do WARN – último valor reportado"
+        labels:
+          severity: warning
+          alarm: alarm_temp_delta
+
+      - uid: solar_poa_ramp_crit_v1
+        title: Rampa brusca de POA (CRIT) – último valor em 30m
+        condition: E
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: A
+              expr: "max_over_time(alert_state{name=\"alarm_poa_ramp\",plant=\"UFV_X\"}[30m])"
+          - refId: B
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: B
+              expr: "2"
+          - refId: D
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: D
+              expr: "scalar(count_over_time(alert_state{name=\"alarm_poa_ramp\",plant=\"UFV_X\"}[30m]) > 0)"
+          - refId: E
+            queryType: instant
+            datasourceUid: "__expr__"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: E
+              type: math
+              expression: "(A == B) and (D == 1)"
+        for: 0s
+        annotations:
+          summary: "Intermitência/sombreamento – último valor reportado"
+        labels:
+          severity: critical
+          alarm: alarm_poa_ramp
+
+      - uid: solar_poa_ramp_warn_v1
+        title: Rampa de POA (WARN) – último valor em 30m
+        condition: E
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: A
+              expr: "max_over_time(alert_state{name=\"alarm_poa_ramp\",plant=\"UFV_X\"}[30m])"
+          - refId: B
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: B
+              expr: "1"
+          - refId: D
+            queryType: instant
+            datasourceUid: "-100"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: D
+              expr: "scalar(count_over_time(alert_state{name=\"alarm_poa_ramp\",plant=\"UFV_X\"}[30m]) > 0)"
+          - refId: E
+            queryType: instant
+            datasourceUid: "__expr__"
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            model:
+              refId: E
+              type: math
+              expression: "(A == B) and (D == 1)"
+        for: 0s
+        annotations:
+          summary: "Variação de POA – último valor reportado"
+        labels:
+          severity: warning
+          alarm: alarm_poa_ramp
