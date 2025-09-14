@@ -1,5 +1,6 @@
 # Simple Digital Twin for PV Systems
 
+This project was funded by the CNPQ (Brazil's National Council for Scientific and Technological Development),
 ---
 
 ## Prerequisites
