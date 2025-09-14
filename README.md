@@ -1,6 +1,5 @@
 # Simple Digital Twin for PV Systems
 
-This project was funded by the CNPQ (Brazil's National Council for Scientific and Technological Development),
 ---
 
 ## Prerequisites
@@ -47,3 +46,5 @@ docker compose down
 docker volume rm pv-twin_vm-data pv-twin_grafana-data
 ```
 ---
+
+This project was funded by the CNPQ (Brazil's National Council for Scientific and Technological Development)
